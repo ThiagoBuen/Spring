@@ -1,0 +1,31 @@
+Comandos docker:
+
+docker run --name librarydb -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=library --network library-network postgres:16.3
+
+docker run --name pgadmin4 --PGADMIN_DEFAULT_EMAIL=admin@admin.com -e  PGADMIN_DEFAULT_PASSWORD=admin -p 15432:80 --network library-network dpage/pgadmin4:8.9
+
+docker network create library-network
+
+Scripts SQL:
+
+create table autor(
+    id uuid not null primary key,
+    nome varchar(100) not null,
+    data_nascimento date not null,
+    nacionalidade varchar(50) not null
+);
+
+create table livro(
+    id uuid not null primary key,
+    isbn varchar(20) not null,
+    titulo varchar(150) not null,
+    data_publicacao date not null,
+    genero varchar(30) not null,
+    preco numeric(18,2),
+    id_autor uuid not null references autor(id),
+    constraint chk_genero check (genero in ('FICCAO', 'FANTASIA', 'MISTERIO', 'ROMANCE', 'BIOGRAFIA', 'CIENCIA'))
+);
+
+select l.titulo as titulo_livro, a.nome as nome_autor
+from livro as l
+join autor as a on a.id = l.id_autor

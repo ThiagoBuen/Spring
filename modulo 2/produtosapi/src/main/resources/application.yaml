@@ -1,0 +1,22 @@
+spring:
+  application:
+      name: Produtos API
+  datasource:
+    url: jdbc:h2:mem:produtos
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          datasource:
+            init: DEBUG
+      hibernate:
+        SQL: DEBUG
